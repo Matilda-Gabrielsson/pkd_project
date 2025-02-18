@@ -6,3 +6,4 @@ git push
 
 hämta nya saker: git pull
 
+nu programerar jag!!
