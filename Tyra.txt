@@ -3,3 +3,6 @@ git add filnamn
 git commit -m "sdjfsldjhfl"
 
 git push
+
+hämta nya saker: git pull
+
