@@ -1,1 +1,5 @@
-hej hej 
+git add filnamn
+
+git commit -m "sdjfsldjhfl"
+
+git push
