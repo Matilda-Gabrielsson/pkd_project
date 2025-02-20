@@ -1,4 +1,6 @@
-import { ListGraph } from "../lib/graphs";
+import { ListGraph} from "../lib/graphs";
+import { List } from "../lib/list";
+import { ProbingHashtable } from "../lib/hashtables";
 
 export type person = {
     id: number 
@@ -10,3 +12,9 @@ export type pepole_graph = {
     number_of_pepole: number
 }; 
 
+
+export type group = {
+    group: number
+}; 
+
+export type group_table = ProbingHashtable<group,person>;
