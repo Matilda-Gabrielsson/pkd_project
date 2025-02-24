@@ -3,7 +3,9 @@ import { List } from "../lib/list";
 import { ProbingHashtable } from "../lib/hashtables";
 
 export type person = {
+    name: string
     id: number 
+    friend_name: string
     friend_id: number
 }; 
 
