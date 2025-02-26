@@ -7,7 +7,7 @@ const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
  * convert input data to an array of people
  * */ 
 
-export function process_input() {
+export function process_input(): Array<person> {
     console.log("");
     console.log("Hello welcome to Groupsort!");
     console.log("");
@@ -74,7 +74,7 @@ export function process_input() {
         option = big_option;
     }
 
-    //console.log(person_array);
+    console.log(person_array);
     return person_array;
 }
 
