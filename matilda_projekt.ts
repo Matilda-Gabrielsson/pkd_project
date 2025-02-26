@@ -1,5 +1,6 @@
 import { lg_new, ListGraph, build_array } from "../lib/graphs";
 import { list, List, length } from "../lib/list";
+import { process_input } from "./engla_project";
 import { people_graph, person } from "./groupsort";
 /*
 export type PeopleListGraph = {
@@ -36,3 +37,5 @@ export function make_list_graph(arr: Array<person>): people_graph {
     return peoplegraph;
 
 }
+
+
