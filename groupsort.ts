@@ -6,7 +6,7 @@ export type person = {
     name: string
     id: number 
     friend_name: string
-    friend_id: number
+    friend_id: number | null
 }; 
 
 export type people_graph = {
