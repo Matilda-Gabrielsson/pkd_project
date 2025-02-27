@@ -8,9 +8,6 @@ const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
  * */ 
 
 export function process_input(): Array<person> {
-    console.log("");
-    console.log("Hello welcome to Groupsort!");
-    console.log("");
     let option = ("");
     let f_index = 2;
     let index = 1;
@@ -58,7 +55,7 @@ export function process_input(): Array<person> {
                 friend_name: friend!,
                 friend_id: f_index 
             };
-            //lite osäker på om den här logiken kommer funka
+           
             index = save_index;
             f_index = save_f_index;
             index = index + 2;
