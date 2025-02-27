@@ -34,18 +34,21 @@ export function process_input(): Array<person> {
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
                 if(person_array[i].friend_name === name) {
                     index = person_array[i].friend_id;
+                    save_index = save_index - 2;
                 }
             }
             // om en person man önkar redan finns som "huvud person" ska vännen få sitt tidigare id
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
                 if(person_array[i].name === friend) {
                     f_index = person_array[i].id;
+                    save_f_index = save_f_index - 2;
                 }
             }
             // om en persons vän redan är någon anans vän
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
                 if(person_array[i].friend_name === friend) {
                     f_index = person_array[i].friend_id;
+                    save_f_index = save_f_index - 2;
                 }
             }
  
