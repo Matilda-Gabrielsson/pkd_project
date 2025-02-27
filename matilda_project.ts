@@ -22,7 +22,7 @@ export function make_list_graph(arr: Array<person>): ListGraph {
              * Ska noderna inte vara id's utan ett index krävs någon sök-algoritm för att veta om ens vän redan finns med för att peka
              * på rätt index. 
              */
-            peoplegraph.adj[i] = list(arr[i].id, arr[i].friend_id);
+            peoplegraph.adj[arr[i].id] = list(arr[i].friend_id);
         }
     }
     return peoplegraph;
