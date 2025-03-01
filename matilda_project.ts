@@ -15,18 +15,17 @@ export function make_list_graph(arr: Array<person>): ListGraph {
     if (len === 0) {
         return peoplegraph;
     } else {
-        for (let i = 0; i < len; i = i + 1) {
+        for (let i = 0; i < len; i = i + 1) { //ändra så att det börjar på 1 likt id's gör OM INTE annan idé
             /**
              * behövs det något sätt att veta om ens vän redan är inlagd? Kommer det att skapas hm. 
              * ska noderna vara id's? isf, förstår denna funktion att den ska peka rätt?
              * Ska noderna inte vara id's utan ett index krävs någon sök-algoritm för att veta om ens vän redan finns med för att peka
              * på rätt index. 
              */
-            peoplegraph.adj[arr[i].id] = list(arr[i].friend_id);
+            peoplegraph.adj[arr[i].id] = list(arr[i].friend_id!);
         }
     }
     return peoplegraph;
-
 }
 
 
