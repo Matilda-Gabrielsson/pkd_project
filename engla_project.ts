@@ -83,7 +83,7 @@ const person_array: Array<person> = process_input();
 
 export function display_groups(group_arr : Array<Array<number>>) {
     for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
-        console.log(`GROUP ${group_arr[i]}`); // den skriver alla nummer innanför i 
+        console.log(`GROUP ${[i + 1]}`); 
         for(let j = 0; group_arr[i][j] !== undefined; j = j + 1) {
             
             for(let k = 0; person_array[k] !== undefined; k = k + 1) {
