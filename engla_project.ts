@@ -33,7 +33,7 @@ export function process_input(): Array<person> {
             // om en person redan har tilldelats ett id av någon som önskat dem ska de få det istället
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
                 if(person_array[i].friend_name === name) {
-                    index = person_array[i].friend_id;
+                    index = person_array[i].friend_id!;
                     save_index = save_index - 2;
                 }
             }
@@ -47,14 +47,14 @@ export function process_input(): Array<person> {
             // om en persons vän redan är någon anans vän
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
                 if(person_array[i].friend_name === friend) {
-                    f_index = person_array[i].friend_id;
+                    f_index = person_array[i].friend_id!;
                     save_f_index = save_f_index - 2;
                 }
             }
  
             const person: person = {
                 name: name!,
-                id: index, //ska få nåt annat om personen inte finns sen innan  
+                id: index, 
                 friend_name: friend!,
                 friend_id: f_index 
             };
@@ -78,4 +78,22 @@ export function process_input(): Array<person> {
     return person_array;
 }
 
-process_input();
+const person_array: Array<person> = process_input();
+// test const group_arr: Array<Array<number>> = [[1, 2], [3, 4, 5], [6]];
+
+export function display_groups(group_arr : Array<Array<number>>) {
+    for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
+        console.log(`GROUP ${group_arr[i]}`); // den skriver alla nummer innanför i 
+        for(let j = 0; group_arr[i][j] !== undefined; j = j + 1) {
+            
+            for(let k = 0; person_array[k] !== undefined; k = k + 1) {
+                if(group_arr[i][j] === person_array[k].id) {
+                    console.log(person_array[k].name);
+                }
+            }
+        }
+        console.log(" ");
+    }
+}
+
+//display_groups(group_arr);
