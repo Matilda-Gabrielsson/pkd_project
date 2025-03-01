@@ -78,8 +78,8 @@ export function process_input(): Array<person> {
     return person_array;
 }
 
-const person_array: Array<person> = process_input();
-// test const group_arr: Array<Array<number>> = [[1, 2], [3, 4, 5], [6]];
+const person_array: Array<person> = process_input()
+const test_group_arr: Array<Array<number>> = [[1, 2], [3, 4, 5], [6]];
 
 export function display_groups(group_arr : Array<Array<number>>) {
     for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
@@ -96,4 +96,4 @@ export function display_groups(group_arr : Array<Array<number>>) {
     }
 }
 
-//display_groups(group_arr);
+display_groups(test_group_arr);
