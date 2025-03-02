@@ -12,9 +12,12 @@ export function divide_if_too_many(groups: number[][], number_of_groups: number,
         const find_small = find_smallest(groups);
         const smallest_group = find_small.group; //the smallest group
         const smallest_group_index: number = find_small.index; //the index of the smallest group
-        const groups_new: number[][] = [];
+        let groups_new = new Array<Array<number>>(groups.length-1); //gör att det blir en set size på nya arrayen så att den förkortas per körning
 
-        for(let i = smallest_group_index; i < groups.length; i = i + 1) { //put the groups in a new array shifting them back
+        for(let i = 0; i < smallest_group_index; i = i + 1) {
+            groups_new[i] = groups[i];
+        }
+        for(let i = smallest_group_index; i < groups_new.length; i = i + 1) { //put the groups in a new array shifting them back
             groups_new[i] = groups[i + 1];
         }
 
