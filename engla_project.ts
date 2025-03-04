@@ -9,8 +9,8 @@ const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 
 export function process_input(): Array<person> {
     let option = ("");
-    let f_index = 2;
-    let index = 1;
+    let f_index = 1;
+    let index = 0;
     const person_array = [];
 
     while(option !== "STOP") {
