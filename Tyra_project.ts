@@ -5,64 +5,82 @@ import { empty, dequeue, enqueue, is_empty, head, Prio_Queue} from "../prio_queu
 import { Queue } from "../lib/queue_array";
 
 
-
-// List of indvide and requested friend, size: how many pepole
-
+/**
+ * A graph in edge lists representation is
+ *     an array of lists of target node ids.
+ * @param adj - An array where each index represents a person (node), 
+ *              and the value is a List of IDs representing they whish 
+ *              to connect with. 
+ * @param size - the number of pepole (nodes) in the graph 
+ * @invariant The length of the outer array is size.
+ * @invariant Every target node id is a non-negative number less than size.
+ * @invariant None of the target node ids appears twice in the same list.
+ */
 export type pepole_graph = {
     adj: Array<List<number>>; 
     size: number; 
 }; 
 
-export function empty_groups (num_groups: number): number[][]{
-    return Array.from({length: num_groups}, () => []); 
-}
-
+/**
+ * Recursively splits a group into smaller subgroups if it
+ * exceeds the maximum group size. The function ensures that 
+ * all resulting groups are of size `max_group_size` or smaller.
+ * @param group - An array of numbers representing the IDs of 
+ *                people in the group.
+ * @param max_group_size - The maximum allowed size for each group.
+ * @returns An array of arrays, where each inner array represents a 
+ *          subgroup of at most `max_group_size` members.
+ */
 
 export function split_group_if_to_big (group: number[], max_group_size: number): number[][]{
     const result: number[][] = new Array(); 
-
     if (group.length <= max_group_size) {
         return [group]; 
     }
-
     const mid_first_half_group = Math.floor(group.length / 2); 
     const first_half = group.slice(0, mid_first_half_group); 
     const second_half =group.slice(mid_first_half_group); 
 
     return [...split_group_if_to_big(first_half, max_group_size), 
-            ...split_group_if_to_big(second_half, max_group_size)];
-    
+            ...split_group_if_to_big(second_half, max_group_size)]; 
 }
 
-export function add_person_to_group(groups: number[][], group_index: number, person_id: number): void {
-    groups[group_index].push(person_id);
-}
-
-export function bfs(graph: pepole_graph, start_person: number, visited: Set<number>, groups: number[][],group_index:number): void {
-    const bfs_order = lg_bfs_visit_order(graph, start_person) as unknown as Prio_Queue<number>;
-    while (!is_empty(bfs_order)) {
-        const current_person = head(bfs_order);
-        dequeue(bfs_order);
-        add_person_to_group(groups, group_index, current_person);
-        visited.add(current_person); 
-    }
-}
-
-export function main_divide_into_groups (graph: pepole_graph, num_groups: number): number[][]{
-    const groups = empty_groups(num_groups); 
-    const visited = new Set<number>; 
-    let group_index = 0; 
-    for (let person = 0; person < graph.size; person++){
-        if(!visited.has(person)){
-            bfs(graph, person, visited, groups, group_index);
-            group_index = (group_index + 1) % num_groups;
+/**
+ * Groups the nodes of a given `pepole_graph` into connected components
+ * using BFS - Breath First Search. 
+ * @param graph - A pepole_graph represneting pepole and there connections. 
+ * @returns An array of arrays where each inner array represnets represents a 
+ * BFS-discovered group of connected people.
+ */
+ 
+export function bfs_groups(graph: ListGraph): number[][] {
+    const groups: number[][] = []; 
+    const visited = new Set<number>(); 
+    for (let person_id = 0; person_id < graph.size; person_id++) {
+        if (!visited.has(person_id)) {
+            const bfs_order = lg_bfs_visit_order(graph, person_id);
+            const bfs_group = bfs_order[2];  
+            groups.push(bfs_group);
+            bfs_group.forEach(person => visited.add(person));
         }
     }
-    const max_group_size = Math.ceil(graph.size / num_groups);
-    const result: number[][] = [];
-    for (const group of groups) {
-        const sub_groups = split_group_if_to_big(group, max_group_size);
-        result.push(...sub_groups);
+    return groups;
+}
+
+/**
+ * @param graph - A pepole_graph represneting pepole and there connections. 
+ * @param num_groups - The desired number of groups.
+ * @returns An array of arrays, where each inner array represents a group.
+ *          The length of the outer array is equal to 'num_groups'. 
+ */
+export function main_divide_into_groups(graph: pepole_graph, num_groups: number): number[][] {
+    const BFS_groups = bfs_groups(graph); 
+    const max_group_size: number = Math.ceil(graph.size / num_groups); 
+    const result: number[][] = []; 
+
+    for (let group of BFS_groups) {
+        const split_groups = split_group_if_to_big(group, max_group_size); 
+        result.push(...split_groups);
     }
     return result; 
 }
@@ -81,33 +99,6 @@ const exampleGraph: ListGraph = {
 };
 
 const numGroups = 3;
-
-export function bfs_groups (graph: ListGraph): number[][] {
-    const groups: number[][] = []; 
-    const visited = new Set<number>;
-    for (let person_id = 0; person_id < graph.size; person_id++) {
-        if ( visited.has(person_id)) {
-            continue; 
-        }
-        const bfs_order = lg_bfs_visit_order(graph, person_id) as unknown as Prio_Queue<number>; 
-        const group: number[] = []; 
-        while (!is_empty(bfs_order)) {
-            const person = head(bfs_order); 
-            dequeue(bfs_order); 
-            if (!visited.has(person)) {
-                visited.add(person); 
-                group.push(person); 
-
-            }
-        }
-    
-        if (group.length > 0) {
-            groups.push(group); 
-        }    
-    }
-    return groups; 
-}
-
 console.log(bfs_groups(exampleGraph));
 
-console.log(lg_bfs_visit_order(exampleGraph));
+console.log(split_group_if_to_big([1,2,3,4,5], 3));
