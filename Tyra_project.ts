@@ -71,7 +71,7 @@ export function main_divide_into_groups (graph: pepole_graph, num_groups: number
 const exampleGraph: ListGraph = {
     adj: [
         [1, null],               // Person 0 är vän med 1
-        [2, null],               // Person 1 är vän med 2
+        [0, null],               // Person 1 är vän med 2
         [3, null],               // Person 2 är vän med 3
         [4, null],               // Person 3 är vän med 4
         [5, null],               // Person 4 är vän med 5
@@ -81,4 +81,33 @@ const exampleGraph: ListGraph = {
 };
 
 const numGroups = 3;
-console.log(main_divide_into_groups(exampleGraph, numGroups));
+
+export function bfs_groups (graph: ListGraph): number[][] {
+    const groups: number[][] = []; 
+    const visited = new Set<number>;
+    for (let person_id = 0; person_id < graph.size; person_id++) {
+        if ( visited.has(person_id)) {
+            continue; 
+        }
+        const bfs_order = lg_bfs_visit_order(graph, person_id) as unknown as Prio_Queue<number>; 
+        const group: number[] = []; 
+        while (!is_empty(bfs_order)) {
+            const person = head(bfs_order); 
+            dequeue(bfs_order); 
+            if (!visited.has(person)) {
+                visited.add(person); 
+                group.push(person); 
+
+            }
+        }
+    
+        if (group.length > 0) {
+            groups.push(group); 
+        }    
+    }
+    return groups; 
+}
+
+console.log(bfs_groups(exampleGraph));
+
+console.log(lg_bfs_visit_order(exampleGraph));
