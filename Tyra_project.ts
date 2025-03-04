@@ -97,8 +97,3 @@ const exampleGraph: ListGraph = {
     ],
     size: 6
 };
-
-const numGroups = 3;
-console.log(bfs_groups(exampleGraph));
-
-console.log(split_group_if_to_big([1,2,3,4,5], 3));
