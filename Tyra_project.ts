@@ -1,7 +1,7 @@
 import { ListGraph, lg_bfs_visit_order} from "../lib/graphs";
 import { List } from "../lib/list";
 import { ph_empty, ProbingHashtable } from "../lib/hashtables";
-import { empty, dequeue, enqueue, is_empty, head, Prio_Queue} from "../prio_queue";
+import { empty, dequeue, enqueue, is_empty, head, Prio_Queue} from "./lib/prio_queue";
 import { Queue } from "../lib/queue_array";
 
 
