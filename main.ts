@@ -9,9 +9,17 @@ const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 
 
 function main_loop() {
-    //Börjangrej
-    const num_groups_string = prompt("How many groups should there be? ");
-    const num_groups = parseInt(num_groups_string!, 10);
+    console.log(" ")
+    console.log("WELCOME TO GROUPSORT")
+    console.log(" ")
+
+    let num_groups_string = prompt("How many groups should there be? ");
+    let num_groups = parseInt(num_groups_string!, 10);
+
+    if(num_groups === null || num_groups < 1) {
+        num_groups_string = prompt("How many groups should there be? ");
+        num_groups = parseInt(num_groups_string!, 10);
+    }
 
     const person_array = process_input();
 
