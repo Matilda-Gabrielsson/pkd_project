@@ -77,10 +77,9 @@ export function process_input(): Array<person> {
     return person_array;
 }
 
-const person_array: Array<person> = process_input()
-const test_group_arr: Array<Array<number>> = [[1, 2], [3], [4, 5]];
+//const person_array: Array<person> = process_input()
 
-export function display_groups(group_arr : Array<Array<number>>) {
+export function display_groups(group_arr : Array<Array<number>>, person_array : Array<person>) {
     for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
         console.log(`GROUP ${[i + 1]}`); 
         for(let j = 0; group_arr[i][j] !== undefined; j = j + 1) {
@@ -94,5 +93,3 @@ export function display_groups(group_arr : Array<Array<number>>) {
         console.log(" ");
     }
 }
-
-display_groups(test_group_arr);
