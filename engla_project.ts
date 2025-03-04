@@ -15,7 +15,6 @@ export function process_input(): Array<person> {
 
     while(option !== "STOP") {
         const name = prompt("Your name: ");
-        // om man inte vill lägga till någon?
         const friend = prompt("Your friends name: ");
         let save_index = index;
         let save_f_index = f_index;
@@ -79,7 +78,7 @@ export function process_input(): Array<person> {
 }
 
 const person_array: Array<person> = process_input()
-const test_group_arr: Array<Array<number>> = [[1, 2], [3, 4, 5], [6]];
+const test_group_arr: Array<Array<number>> = [[1, 2], [3], [4, 5]];
 
 export function display_groups(group_arr : Array<Array<number>>) {
     for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
