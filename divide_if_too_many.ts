@@ -13,22 +13,25 @@ export function divide_if_too_many(groups: number[][], number_of_groups: number,
         const find_small = find_smallest(groups);
         const smallest_group = find_small.group; //the smallest group
         const smallest_group_index: number = find_small.index; //the index of the smallest group
-        //let groups_new = new Array<Array<number>>(groups.length-1); //gör att det blir en set size på nya arrayen så att den förkortas per körning
-        //obs detta gör att den klipper bort grupper om de är för stora LOL
-        let groups_new: number[][] = [];
 
-        for (let i = 0; i < groups.length; i++) {
+        let groups_new = new Array<Array<number>>(groups.length-1); //gör att det blir en set size på nya arrayen så att den förkortas per körning
+        
+        //alternativt sätt att göra på
+        //let groups_new: number[][] = [];
+        /*
+        for (let i = 0; i < groups.length-1; i++) {
             if (i !== smallest_group_index) {
                 groups_new.push(groups[i]);
             }
         }
-        /*
+        */
+        
         for(let i = 0; i < smallest_group_index; i = i + 1) {
             groups_new[i] = groups[i];
         }
         for(let i = smallest_group_index; i < groups_new.length; i = i + 1) { //put the groups in a new array shifting them back
             groups_new[i] = groups[i + 1];
-        }*/
+        }
 
         let merged = false;
         for(let i = 0; i < groups_new.length; i = i + 1) {
@@ -62,7 +65,7 @@ export function find_smallest(groups: number[][]) {
     let current_small = groups[0].length;
     let current_small_index: number = 0;
 
-    for(let i = 1; i <groups.length; i = i + 1) {
+    for(let i = 1; groups[i] !== undefined; i = i + 1) {
         if (current_small > groups[i].length) {
             current_small = groups[i].length;
             current_small_index = i;
@@ -74,16 +77,16 @@ export function find_smallest(groups: number[][]) {
 /*
 //tester här för testfilen strular??
 let grupper = [[1,2], [3,4,5], [8], [9]];
-console.log(find_smallest(grupper));
+console.log(find_smallest(grupper));*/
 
 const grn = 4;
 const mgs = 3;
-
+/*
 const grps = [[1,2,3], [4,5], [6,7,8], [9], [10,11,12]];
 console.log(divide_if_too_many(grps, grn, mgs));
 
 const grps2 = [[1,2], [4,5], [6,7,8], [9], [10,11,12], [13]];
-console.log(divide_if_too_many(grps2, grn, mgs));
+console.log(divide_if_too_many(grps2, grn, mgs));*/
 
 const grps4 = [[1,2], [3,12], [4,5], [6,7], [8,9], [10,11]];
-console.log(divide_if_too_many(grps4, grn, mgs));*/
+console.log(divide_if_too_many(grps4, grn, mgs));
