@@ -4,7 +4,9 @@ import * as PromptSync from "prompt-sync";
 const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 
 /**
- * convert input data to an array of people
+ * Ask multiple users that want to apply for Group Sort for their name and a friend 
+ * every person that applies is given a id. Convert the input data to a person 
+ * @returns Array<person> to store every application and their wished friend
  * */ 
 
 export function process_input(): Array<person> {
@@ -67,7 +69,7 @@ export function process_input(): Array<person> {
         }
 
         console.log(" ")
-        option = prompt("Write STOP to finish or press ENTER to continue: ")!;
+        option = prompt("Write STOP to quit or press ENTER to continue adding people: ")!;
         console.log(" ")
         const big_option = option.toUpperCase();
         option = big_option;
@@ -77,7 +79,12 @@ export function process_input(): Array<person> {
     return person_array;
 }
 
-//const person_array: Array<person> = process_input()
+/**
+ * Convert an array to visual list of names that are stored by id and sorted by array index. 
+ * @param group_arr the final groups as an array
+ * @param person_array the array of persons
+ * @returns display groups and names of members. 
+ */
 
 export function display_groups(group_arr : Array<Array<number>>, person_array : Array<person>) {
     for(let i = 0; group_arr[i] !== undefined; i = i + 1) {
