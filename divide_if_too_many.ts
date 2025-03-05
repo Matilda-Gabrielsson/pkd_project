@@ -1,5 +1,5 @@
 
-import { split_group_if_to_big } from "./tyras_bit";
+import { split_group_if_to_big } from "./Tyra_project";
 /**
  * 
  * @param groups grupperna
@@ -47,6 +47,7 @@ export function divide_if_too_many(groups: number[][], number_of_groups: number,
             let new_group_array = [...groups_new, ...split_groups];
             groups_new = new_group_array;
         }
+
         return(divide_if_too_many(groups_new, number_of_groups, max_group_size));
     } else {
         return groups;
@@ -70,7 +71,7 @@ export function find_smallest(groups: number[][]) {
     return {index: current_small_index, group: groups[current_small_index]};
 }
 
-
+/*
 //tester här för testfilen strular??
 let grupper = [[1,2], [3,4,5], [8], [9]];
 console.log(find_smallest(grupper));
@@ -85,4 +86,4 @@ const grps2 = [[1,2], [4,5], [6,7,8], [9], [10,11,12], [13]];
 console.log(divide_if_too_many(grps2, grn, mgs));
 
 const grps4 = [[1,2], [3,12], [4,5], [6,7], [8,9], [10,11]];
-console.log(divide_if_too_many(grps4, grn, mgs));
+console.log(divide_if_too_many(grps4, grn, mgs));*/
