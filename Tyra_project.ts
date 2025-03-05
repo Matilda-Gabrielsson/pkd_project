@@ -53,6 +53,7 @@ export function split_group_if_to_big (group: number[], max_group_size: number):
  * BFS-discovered group of connected people.
  */
  
+
 export function bfs_groups(graph: ListGraph): number[][] {
     const groups: number[][] = []; 
     const visited = new Set<number>(); 
@@ -64,8 +65,52 @@ export function bfs_groups(graph: ListGraph): number[][] {
             bfs_group.forEach(person => visited.add(person));
         }
     }
+    return merge_bfs_groups(groups);
+}
+
+
+export function merge_bfs_groups(pepole_groups: number[][]): number[][] {
+    const groups: number[][] = []; 
+    const visited = new Set<number>();
+
+    for (const current_group of pepole_groups) {
+        let is_merged = false;
+
+        for (let i = 0; i < groups.length; i++) {
+            if (current_group.some(person => groups[i].includes(person))) {
+                groups[i] = Array.from(new Set([...groups[i], ...current_group])); // Slå ihop grupper
+                is_merged = true;
+                break; // När vi slår ihop, kan vi gå vidare till nästa grupp
+            }
+        }
+
+        // Om ingen befintlig grupp hade en gemensam person, skapa en ny grupp
+        if (!is_merged) {
+            groups.push([...current_group]);
+        }
+    }
+
     return groups;
 }
+
+/**
+ * export function bfs (pepole_array: number[][]): number[][]{
+    const groups: number[][] = []; 
+    const visitied = new Set<number>();
+    for (let group_id = 0; group_id < length.pepole_array; group_id++){
+        const pepole_in_the_group = pepole_array[group_id] 
+        for (let person_id = 0; person_id < group_id.length; group_id++){
+            if(!visitied.has(person_id))
+                for()
+
+        }
+        
+    }
+
+}
+ */
+
+
 
 /**
  * @param graph - A pepole_graph represneting pepole and there connections. 
@@ -85,15 +130,21 @@ export function main_divide_into_groups(graph: pepole_graph, num_groups: number)
     return result; 
 }
 
-
 const exampleGraph: ListGraph = {
     adj: [
         [1, null],               // Person 0 är vän med 1
         [0, null],               // Person 1 är vän med 2
-        [3, null],               // Person 2 är vän med 3
+        [1, null],               // Person 2 är vän med 3
         [4, null],               // Person 3 är vän med 4
         [5, null],               // Person 4 är vän med 5
         [4, null]                // Person 5 är vän med 4 
     ],
     size: 6
 };
+
+console.log(bfs_groups(exampleGraph));
+console.log(main_divide_into_groups(exampleGraph, 3));
+console.log(lg_bfs_visit_order(exampleGraph, 0));
+console.log(lg_bfs_visit_order(exampleGraph, 2));
+
+console.log(merge_bfs_groups(bfs_groups(exampleGraph)));
