@@ -18,13 +18,13 @@ export function divide_if_too_many(groups: number[][], number_of_groups: number,
         
         //alternativt sätt att göra på
         //let groups_new: number[][] = [];
-        /*
+        /* 
         for (let i = 0; i < groups.length-1; i++) {
             if (i !== smallest_group_index) {
                 groups_new.push(groups[i]);
             }
-        }
-        */
+        } */
+        
         
         for(let i = 0; i < smallest_group_index; i = i + 1) {
             groups_new[i] = groups[i];
