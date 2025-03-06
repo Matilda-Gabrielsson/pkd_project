@@ -38,7 +38,7 @@ function main_loop() {
     }
     console.log(split_group_result);
 
-    const divided_groups = divide_if_too_many(split_group_result, max_group_size, num_groups);
+    const divided_groups = divide_if_too_many(split_group_result, num_groups, max_group_size);
     console.log(divided_groups);
 
     display_groups(divided_groups, person_array);
