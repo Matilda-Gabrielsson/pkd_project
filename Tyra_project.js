@@ -14,6 +14,9 @@ exports.bfs_groups = bfs_groups;
 exports.merge_bfs_groups = merge_bfs_groups;
 exports.main_divide_into_groups = main_divide_into_groups;
 var graphs_1 = require("../lib/graphs");
+var PromptSync = require("prompt-sync");
+var divide_if_too_many_1 = require("./divide_if_too_many");
+var engla_project_1 = require("./engla_project");
 /**
  * Recursively splits a group into smaller subgroups if it
  * exceeds the maximum group size. The function ensures that
@@ -128,3 +131,101 @@ console.log(main_divide_into_groups(exampleGraph, 3));
 console.log((0, graphs_1.lg_bfs_visit_order)(exampleGraph, 0));
 console.log((0, graphs_1.lg_bfs_visit_order)(exampleGraph, 2));
 console.log(merge_bfs_groups(bfs_groups(exampleGraph)));
+function process_input() {
+    var _a, _b;
+    var option = "";
+    var person_array = [];
+    var name_to_id = {}; // Mappning av namn → ID
+    var applied_names = new Set(); // De som själva ansökt
+    var index = 0;
+    var temp_applications = [];
+    while (option !== "STOP") {
+        var name_1 = ((_a = prompt("Your name: ")) === null || _a === void 0 ? void 0 : _a.trim()) || "";
+        var friend = ((_b = prompt("Your friend's name: ")) === null || _b === void 0 ? void 0 : _b.trim()) || "";
+        if (!name_1 || !friend) {
+            console.log("Invalid input. Please enter both your name and your friend's name.");
+            continue;
+        }
+        // Om personen inte redan ansökt, ge dem ett ID 0,1,2,3...
+        if (!(name_1 in name_to_id)) {
+            name_to_id[name_1] = index++;
+            applied_names.add(name_1);
+        }
+        // Spara ansökan, men vänta med att ge vännen ett ID
+        temp_applications.push({ name: name_1, friend_name: friend });
+        console.log(" ");
+        option = (prompt("Write STOP to quit or press ENTER to continue adding people: ") || "").trim().toUpperCase();
+        console.log(" ");
+    }
+    // Tilldela friend_id i efterhand
+    var next_available_id = index; // Börja på nästa lediga index för externa vänner
+    for (var _i = 0, temp_applications_1 = temp_applications; _i < temp_applications_1.length; _i++) {
+        var app = temp_applications_1[_i];
+        var friend_id = void 0;
+        if (app.friend_name in name_to_id) {
+            friend_id = name_to_id[app.friend_name]; // Om vännen redan har ID, använd det
+        }
+        else {
+            friend_id = next_available_id++; // Annars ge dem nästa lediga ID
+            name_to_id[app.friend_name] = friend_id;
+        }
+        person_array.push({
+            name: app.name,
+            id: name_to_id[app.name], // Garanterat 0,1,2... n-1 för de som ansökt
+            friend_name: app.friend_name,
+            friend_id: friend_id
+        });
+    }
+    console.log(person_array);
+    return person_array;
+}
+function make_list_graph(arr) {
+    var len = arr.length;
+    var peoplegraph = { size: len, adj: Array(len).fill(null) };
+    if (len === 0) {
+        return peoplegraph;
+    }
+    var _loop_2 = function (i) {
+        var person = arr[i];
+        // Om vännen också har ansökt, skapa koppling
+        if (arr.some(function (p) { return p.id === person.friend_id; })) {
+            peoplegraph.adj[person.id] = [person.friend_id, null];
+        }
+        else {
+            peoplegraph.adj[person.id] = null;
+        }
+    };
+    for (var i = 0; i < len; i++) {
+        _loop_2(i);
+    }
+    return peoplegraph;
+}
+var prompt = PromptSync({ sigint: true });
+function main_loop() {
+    console.log(" ");
+    console.log("WELCOME TO GROUPSORT");
+    console.log(" ");
+    var num_groups_string = prompt("How many groups should there be? ");
+    var num_groups = parseInt(num_groups_string, 10);
+    if (num_groups === null || num_groups < 1) {
+        num_groups_string = prompt("How many groups should there be? ");
+        num_groups = parseInt(num_groups_string, 10);
+    }
+    var person_array = process_input();
+    var group_graph = make_list_graph(person_array);
+    console.log(group_graph);
+    var BFS_groups = bfs_groups(group_graph);
+    console.log(BFS_groups);
+    var max_group_size = Math.ceil(group_graph.size / num_groups);
+    var split_group_result = [];
+    for (var _i = 0, BFS_groups_2 = BFS_groups; _i < BFS_groups_2.length; _i++) {
+        var group = BFS_groups_2[_i];
+        var split_groups = split_group_if_to_big(group, max_group_size);
+        split_group_result.push.apply(split_group_result, split_groups);
+    }
+    console.log(split_group_result);
+    var divided_groups = (0, divide_if_too_many_1.divide_if_too_many)(split_group_result, max_group_size, num_groups);
+    console.log(divided_groups);
+    (0, engla_project_1.display_groups)(divided_groups, person_array);
+}
+main_loop();
