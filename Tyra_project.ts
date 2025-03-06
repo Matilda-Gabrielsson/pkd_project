@@ -4,6 +4,9 @@ import { ph_empty, ProbingHashtable } from "../lib/hashtables";
 import { empty, dequeue, enqueue, is_empty, head, Prio_Queue} from "./lib/prio_queue";
 import { Queue } from "../lib/queue_array";
 
+import * as PromptSync from "prompt-sync";
+import { divide_if_too_many } from "./divide_if_too_many";
+import { display_groups } from "./engla_project";
 
 /**
  * A graph in edge lists representation is
@@ -148,3 +151,135 @@ console.log(lg_bfs_visit_order(exampleGraph, 0));
 console.log(lg_bfs_visit_order(exampleGraph, 2));
 
 console.log(merge_bfs_groups(bfs_groups(exampleGraph)));
+
+
+
+
+
+
+function process_input() {
+    let option: string = "";
+    let person_array: { name: string, id: number, friend_name: string, friend_id: number }[] = [];
+    let name_to_id: Record<string, number> = {}; // Mappning av namn → ID
+    let applied_names = new Set<string>(); // De som själva ansökt
+    let index = 0;
+
+    let temp_applications: { name: string; friend_name: string }[] = [];
+
+    while (option !== "STOP") {
+        let name_1 = prompt("Your name: ")?.trim() || "";
+        let friend = prompt("Your friend's name: ")?.trim() || "";
+
+        if (!name_1 || !friend) {
+            console.log("Invalid input. Please enter both your name and your friend's name.");
+            continue;
+        }
+
+        // Om personen inte redan ansökt, ge dem ett ID 0,1,2,3...
+        if (!(name_1 in name_to_id)) {
+            name_to_id[name_1] = index++;
+            applied_names.add(name_1);
+        }
+
+        // Spara ansökan, men vänta med att ge vännen ett ID
+        temp_applications.push({ name: name_1, friend_name: friend });
+
+        console.log(" ");
+        option = (prompt("Write STOP to quit or press ENTER to continue adding people: ") || "").trim().toUpperCase();
+        console.log(" ");
+    }
+
+    // Tilldela friend_id i efterhand
+    let next_available_id = index; // Börja på nästa lediga index för externa vänner
+    for (let app of temp_applications) {
+        let friend_id: number;
+
+        if (app.friend_name in name_to_id) {
+            friend_id = name_to_id[app.friend_name]; // Om vännen redan har ID, använd det
+        } else {
+            friend_id = next_available_id++; // Annars ge dem nästa lediga ID
+            name_to_id[app.friend_name] = friend_id;
+        }
+
+        person_array.push({
+            name: app.name,
+            id: name_to_id[app.name], // Garanterat 0,1,2... n-1 för de som ansökt
+            friend_name: app.friend_name,
+            friend_id: friend_id
+        });
+    }
+
+    console.log(person_array);
+    return person_array;
+}
+
+
+function make_list_graph(arr: { name: string; id: number; friend_name: string; friend_id: number }[]) {
+    let len = arr.length;
+    let peoplegraph = { size: len, adj: Array(len).fill(null) };
+
+    if (len === 0) {
+        return peoplegraph;
+    }
+
+    for (let i = 0; i < len; i++) {
+        let person = arr[i];
+
+        // Om vännen också har ansökt, skapa koppling
+        if (arr.some(p => p.id === person.friend_id)) {
+            peoplegraph.adj[person.id] = [person.friend_id, null];
+        } else {
+            peoplegraph.adj[person.id] = null;
+        }
+    }
+
+    return peoplegraph;
+}
+
+
+
+
+
+
+
+const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
+
+
+function main_loop() {
+    console.log(" ")
+    console.log("WELCOME TO GROUPSORT")
+    console.log(" ")
+
+    let num_groups_string = prompt("How many groups should there be? ");
+    let num_groups = parseInt(num_groups_string!, 10);
+
+    if(num_groups === null || num_groups < 1) {
+        num_groups_string = prompt("How many groups should there be? ");
+        num_groups = parseInt(num_groups_string!, 10);
+    }
+
+    const person_array = process_input();
+
+    const group_graph = make_list_graph(person_array);
+    console.log(group_graph);
+
+    const BFS_groups = bfs_groups(group_graph); 
+    console.log(BFS_groups);
+
+    const max_group_size: number = Math.ceil(group_graph.size / num_groups); 
+    const split_group_result: number[][] = []; 
+
+    for (let group of BFS_groups) {
+        const split_groups = split_group_if_to_big(group, max_group_size); 
+        split_group_result.push(...split_groups);
+    }
+    console.log(split_group_result);
+
+    const divided_groups = divide_if_too_many(split_group_result, max_group_size, num_groups);
+    console.log(divided_groups);
+
+    display_groups(divided_groups, person_array);
+
+}
+
+main_loop();
