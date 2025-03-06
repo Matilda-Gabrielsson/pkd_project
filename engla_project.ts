@@ -31,25 +31,26 @@ export function process_input(): Array<person> {
             }
         } 
         if(double_apply === false) {
-            // om en person redan har tilldelats ett id av någon som önskat dem ska de få det istället
+            
             for(let i = 0; person_array[i] !== undefined; i = i + 1) {
+                // om en person redan har tilldelats ett id av någon som önskat dem ska de få det istället
                 if(person_array[i].friend_name === name) {
                     index = person_array[i].friend_id!;
                     save_index = save_index - 2;
-                }
-            }
-            // om en person man önkar redan finns som "huvud person" ska vännen få sitt tidigare id
-            for(let i = 0; person_array[i] !== undefined; i = i + 1) {
-                if(person_array[i].name === friend) {
-                    f_index = person_array[i].id;
-                    save_f_index = save_f_index - 2;
-                }
-            }
-            // om en persons vän redan är någon anans vän
-            for(let i = 0; person_array[i] !== undefined; i = i + 1) {
-                if(person_array[i].friend_name === friend) {
-                    f_index = person_array[i].friend_id!;
-                    save_f_index = save_f_index - 2;
+                // om en person man önkar redan finns som "huvud person" ska vännen få sitt tidigare id
+                } else if(person_array[i].name === friend) {
+                     f_index = person_array[i].id;
+                     save_f_index = save_f_index - 2;
+                // om en persons vän redan är någon anans vän
+                } else if(person_array[i].friend_name === friend) {
+                    // om en person redan har ändar f_index pga av den även är huvudperson
+                    if(person_array[i].name === friend) {
+                        f_index = save_f_index + 2;
+                    } else {
+                        f_index = person_array[i].friend_id!;
+                        save_f_index = save_f_index - 2;
+                    }
+
                 }
             }
  
